@@ -28,11 +28,17 @@ public interface SysTaskMapper {
 
     /**
      * 保存数据
+     *
      * @param sysTask 任务数据
      * @return 任务数据，加入id
      */
     SysTask save(SysTask sysTask);
 
+    /**
+     * 保存或更新数据
+     *
+     * @param sysTask 任务数据
+     */
     void saveAndFlush(SysTask sysTask);
 
     /**

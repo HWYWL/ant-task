@@ -29,6 +29,9 @@ public class SysTaskMapperImpl implements SysTaskMapper {
     private static List<SysTask> tasks = new ArrayList<>();
 
     {
+        /**
+         * 初始化加载或者创建配置文件
+         */
         String filePath = TaskConfig.filePath;
         if (FileUtil.exist(filePath)) {
             List<String> lines = FileUtil.readUtf8Lines(filePath);
