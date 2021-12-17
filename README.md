@@ -21,13 +21,13 @@
 <dependency>
   <groupId>com.github.hwywl</groupId>
   <artifactId>ant-task</artifactId>
-  <version>1.0.1-RELEASE</version>
+  <version>1.0.2-RELEASE</version>
 </dependency>
 ```
 
 **Gradle**
 ```
-implementation 'com.github.hwywl:ant-task:1.0.1-RELEASE'
+implementation 'com.github.hwywl:ant-task:1.0.2-RELEASE'
 ```
 
 ## 使用

@@ -19,7 +19,7 @@
         <el-table-column prop="taskId" label="任务编号" width="150px"></el-table-column>
         <el-table-column prop="beanName" label="Bean名称"></el-table-column>
         <el-table-column prop="methodName" label="方法名称"></el-table-column>
-        <el-table-column prop="methodParams" label="参数"></el-table-column>
+        <el-table-column prop="methodParams" label="参数" :show-overflow-tooltip="true"></el-table-column>
         <el-table-column label="Cron表达式">
             <template slot-scope="scope">
                 <el-tag size="mini">{{scope.row.cronExpression}}</el-tag>
