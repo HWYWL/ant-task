@@ -1,12 +1,17 @@
 package com.github.hwywl.ant.task.config;
 
-import com.github.hwywl.ant.task.utils.SpringContextUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.ReflectUtil;
+import cn.hutool.extra.spring.SpringUtil;
+import cn.hutool.json.JSONUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -36,7 +41,7 @@ public class SchedulingRunnable implements Runnable {
     /**
      * 参数
      */
-    private final String params;
+    private final Object params;
 
     private Object targetBean;
 
@@ -49,16 +54,18 @@ public class SchedulingRunnable implements Runnable {
         this.params = params;
 
         try {
-            targetBean = SpringContextUtil.getBean(beanName);
+            targetBean = SpringUtil.getBean(beanName);
+            Class<?> aClass = targetBean.getClass();
+            Method[] methods = ReflectUtil.getMethods(aClass);
+            boolean anyMatch = Arrays.stream(methods).anyMatch(e -> e.getName().equals(methodName));
 
-            if (StringUtils.hasText(params)) {
-                method = targetBean.getClass().getDeclaredMethod(methodName, String.class);
+            if (anyMatch) {
+                method = Arrays.stream(methods).filter(e -> e.getName().equals(methodName)).findFirst().get();
+                ReflectionUtils.makeAccessible(method);
             } else {
-                method = targetBean.getClass().getDeclaredMethod(methodName);
+                logger.error("在反射中未找到相匹配的方法：" + methodName);
             }
-
-            ReflectionUtils.makeAccessible(method);
-        } catch (NoSuchMethodException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -69,10 +76,24 @@ public class SchedulingRunnable implements Runnable {
         long startTime = System.currentTimeMillis();
 
         try {
-            if (StringUtils.hasText(params)) {
-                method.invoke(targetBean, params);
-            } else {
+            Parameter[] parameters = method.getParameters();
+            if (parameters.length == 0 || ObjectUtil.isEmpty(params)) {
                 method.invoke(targetBean);
+            } else if (parameters.length == 1) {
+                Object parameterObj = params;
+                Parameter parameter = parameters[0];
+
+                Class<?> parameterType = parameters[0].getType();
+                // 如果不是基础类型需要对参数进行处理
+                if (!parameterType.isPrimitive() && !parameterType.isAssignableFrom(String.class)) {
+                    Type type = parameter.getParameterizedType();
+                    Class<?> clazz = Class.forName(type.getTypeName());
+                    parameterObj = JSONUtil.toBean((String) params, clazz);
+                }
+
+                method.invoke(targetBean, parameterObj);
+            } else {
+                logger.error("当前版本不支持多个参数的方法调用，请封装到一个Bean中，可以使用JSON格式传参！");
             }
         } catch (Exception ex) {
             logger.error(String.format("定时任务执行异常 - taskId：%s，bean：%s，方法：%s，参数：%s ", taskId, beanName, methodName, params), ex);
@@ -105,5 +126,9 @@ public class SchedulingRunnable implements Runnable {
         }
 
         return Objects.hash(beanName, methodName, params);
+    }
+
+    public String getTaskId() {
+        return taskId;
     }
 }

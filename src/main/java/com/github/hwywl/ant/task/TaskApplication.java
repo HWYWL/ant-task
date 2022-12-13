@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * 扫描类
+ * @author HWY
  */
 @Configuration
 @ComponentScan

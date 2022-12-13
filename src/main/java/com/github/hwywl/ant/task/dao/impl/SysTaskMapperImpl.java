@@ -1,5 +1,4 @@
 package com.github.hwywl.ant.task.dao.impl;
-import java.util.ArrayList;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.DateUtil;
@@ -9,6 +8,7 @@ import cn.hutool.json.JSONUtil;
 import com.github.hwywl.ant.task.config.TaskConfig;
 import com.github.hwywl.ant.task.dao.SysTaskMapper;
 import com.github.hwywl.ant.task.model.SysTask;
+import com.github.hwywl.ant.task.utils.TaskDateUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -29,8 +29,8 @@ public class SysTaskMapperImpl implements SysTaskMapper {
     private static List<SysTask> tasks = new ArrayList<>();
 
     {
-        /**
-         * 初始化加载或者创建配置文件
+        /*
+          初始化加载或者创建配置文件
          */
         String filePath = TaskConfig.filePath;
         if (FileUtil.exist(filePath)) {
@@ -60,7 +60,7 @@ public class SysTaskMapperImpl implements SysTaskMapper {
         List<SysTask> collect = new ArrayList<>();
         sysTask.setTaskId("TaskId-" + RandomUtil.randomString(8));
 
-        String day = DateUtil.date().setTimeZone(TimeZone.getTimeZone("GMT+8:00")).toString(DatePattern.NORM_DATETIME_PATTERN);
+        String day = TaskDateUtil.getNowDateStr();
         sysTask.setCreateTime(day);
         sysTask.setUpdateTime(day);
 
@@ -76,8 +76,7 @@ public class SysTaskMapperImpl implements SysTaskMapper {
         if (null == sysTask.getTaskId()) {
             save(sysTask);
         } else {
-            String day = DateUtil.date().setTimeZone(TimeZone.getTimeZone("GMT+8:00")).toString(DatePattern.NORM_DATETIME_PATTERN);
-            sysTask.setUpdateTime(day);
+            sysTask.setUpdateTime(TaskDateUtil.getNowDateStr());
 
             List<SysTask> collect = tasks.stream().filter(task -> !task.getTaskId().equals(sysTask.getTaskId())).collect(Collectors.toList());
             collect.add(sysTask);

@@ -11,7 +11,7 @@
 
     <groupId>com.github.hwywl</groupId>
     <artifactId>ant-task</artifactId>
-    <version>1.0.2-RELEASE</version>
+    <version>1.0.3-RELEASE</version>
 
     <name>ant-task</name>
     <description>一个mini的定时任务管理器</description>
@@ -28,7 +28,7 @@
         <connection>scm:git:https://github.com/HWYWL/ant-task.git</connection>
         <developerConnection>scm:git:https://github.com/HWYWL/ant-task.git</developerConnection>
         <url>https://github.com/HWYWL/ant-task</url>
-        <tag>ant-task-1.0.2</tag>
+        <tag>ant-task-1.0.3</tag>
     </scm>
 
     <developers>
@@ -64,7 +64,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.7.12</version>
+            <version>5.8.10</version>
         </dependency>
 
         <dependency>

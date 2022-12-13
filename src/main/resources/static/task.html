@@ -52,7 +52,8 @@
     </el-table>
     <br/>
     <div style="text-align:center">
-        <el-button icon="el-icon-circle-plus-outline" type="primary" plain @click="showEditTaskView">添加任务</el-button>
+        <el-button icon="el-icon-circle-plus-outline" type="primary" plain @click="showEditTaskView">添加任务
+        </el-button>
     </div>
     <el-dialog
             :title="dialogTitle"
@@ -82,12 +83,21 @@
                 </el-form-item>
             </el-form>
         </div>
+
+        <el-divider content-position="left">参数说明</el-divider>
+        <span class="crimson-text">当前版本不支持多个参数的方法调用，请封装到一个Bean中，可以使用JSON格式传参,
+            或者可以使用字符串接收后自己切割。</span>
         <span slot="footer" class="dialog-footer">
     <el-button size="mini" @click="dialogVisible = false">取 消</el-button>
     <el-button size="mini" type="primary" @click="commitData">确 定</el-button>
   </span>
     </el-dialog>
 </div>
+<style>
+    .crimson-text {
+        color:  #f89898;
+    }
+</style>
 <script>
     new Vue({
         el: "#app",
