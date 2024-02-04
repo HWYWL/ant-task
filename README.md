@@ -21,13 +21,13 @@
 <dependency>
   <groupId>com.github.hwywl</groupId>
   <artifactId>ant-task</artifactId>
-  <version>1.0.3-RELEASE</version>
+  <version>1.0.4-RELEASE</version>
 </dependency>
 ```
 
 **Gradle**
 ```
-implementation 'com.github.hwywl:ant-task:1.0.3-RELEASE'
+implementation 'com.github.hwywl:ant-task:1.0.4-RELEASE'
 ```
 
 ## 使用
@@ -116,6 +116,9 @@ public class TaskDemo {
 - Vue
 
 ## 版本迭代
+### 1.0.4-RELEASE
+- 小版本更新各个包版本
+
 ### 1.0.3-RELEASE
 - 增加参数对JSON数据的支持，可以让入参的Bean对象直接接收
 - 修复因更新导致的任务重复执行问题

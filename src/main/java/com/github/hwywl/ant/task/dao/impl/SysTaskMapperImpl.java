@@ -1,7 +1,5 @@
 package com.github.hwywl.ant.task.dao.impl;
 
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.json.JSONUtil;
@@ -11,7 +9,10 @@ import com.github.hwywl.ant.task.model.SysTask;
 import com.github.hwywl.ant.task.utils.TaskDateUtil;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +59,7 @@ public class SysTaskMapperImpl implements SysTaskMapper {
     @Override
     public SysTask save(SysTask sysTask) {
         List<SysTask> collect = new ArrayList<>();
-        sysTask.setTaskId("TaskId-" + RandomUtil.randomString(8));
+        sysTask.setTaskId("TaskId-" + RandomUtil.randomNumbers(10));
 
         String day = TaskDateUtil.getNowDateStr();
         sysTask.setCreateTime(day);
